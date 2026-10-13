@@ -41,10 +41,21 @@ docker network create sub2api-deploy_sub2api-network
 
 ## 启动服务
 
+当前模板默认从 GHCR 使用发布镜像：
+
+```yaml
+image: ghcr.io/arronlong/gateway-ops:${GATEWAYOPS_IMAGE_TAG:-latest}
+```
+
+未设置 `GATEWAYOPS_IMAGE_TAG` 时跟随 `latest`；生产环境建议在 `.env` 中填写已发布固定版本，例如 `GATEWAYOPS_IMAGE_TAG=1.0.1`（先确认该标签已发布）。拉取与启动均使用 Compose 当前配置的同一标签：
+
 ```bash
-docker compose up -d --build
+docker compose pull app
+docker compose up -d --no-build
 docker compose ps
 ```
+
+首次拉取需要镜像存在且部署主机有访问权限。发布配置中 Docker Hub 是可选目标；运行 GHCR 镜像不需要 Docker Hub 凭据，详情见 [版本与更新](/reference/versions)。
 
 默认 Web 地址为 `http://127.0.0.1:8080`。默认宿主机 PostgreSQL 端口为 `127.0.0.1:54329`；应用容器内部连接数据库使用 `gatewayops-postgres:5432`。
 
@@ -62,11 +73,7 @@ curl http://127.0.0.1:8080/healthz
 
 ## 常用运维命令
 
-使用 GHCR 发布镜像时，将 `docker-compose.yml` 中 `app.image` 设置为以下地址：
-
-```yaml
-image: ghcr.io/arronlong/gateway-ops:${GATEWAYOPS_IMAGE_TAG:-latest}
-```
+当前 Compose 已默认指向 GHCR。使用较早的 Compose 文件时，先确认 `app.image` 已采用上面的地址；只改 `GATEWAYOPS_IMAGE_TAG` 不会更换镜像仓库。以下 `latest` 示例要求 `.env` 中的 `GATEWAYOPS_IMAGE_TAG=latest`：
 
 ```bash
 docker compose ps
@@ -77,6 +84,8 @@ docker compose stop
 docker compose start
 ```
 
-使用源码构建时运行 `docker compose up -d --build app`。生产环境建议将 `GATEWAYOPS_IMAGE_TAG` 锁定到明确版本，不要依赖浮动的 `latest`。
+固定版本时设置 `GATEWAYOPS_IMAGE_TAG`，再执行 `docker compose pull app` 和 `docker compose up -d --no-build app`，不要只拉取 `latest` 后期待固定标签的容器自动更新。
+
+需要使用本地源码时，先执行 `docker compose build app`，再执行 `docker compose up -d --no-build --pull never app`。本地构建信息与正式发布镜像可能不同，启动后在系统设置核对版本。
 
 `docker compose down` 会停止并移除容器，但不会自动删除命名数据卷。不要在没有备份的情况下运行带 `-v` 的清理命令。

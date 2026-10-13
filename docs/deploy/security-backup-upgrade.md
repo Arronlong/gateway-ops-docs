@@ -35,15 +35,17 @@ docker compose exec -T postgres psql -U gatewayops -d gatewayops < gatewayops-ba
 
 1. 阅读目标版本的发布说明，确认配置或数据库迁移要求。
 2. 备份数据库和 `.env`。
-3. 确保 `app.image` 指向 GHCR；默认使用 `latest`，固定版本时同步调整 `GATEWAYOPS_IMAGE_TAG` 和镜像标签。
-4. 拉取并重建应用：
+3. 当前 Compose 默认指向 GHCR，在 `.env` 中将 `GATEWAYOPS_IMAGE_TAG` 设为已发布目标版本；旧模板还需检查 `app.image` 的仓库地址和标签变量。
+4. 拉取配置中的同一标签并重新创建应用：
 
 ```bash
-docker pull ghcr.io/arronlong/gateway-ops:latest
+docker compose pull app
 docker compose up -d --no-build app
 docker compose logs -f app
 ```
 
-从本地源码构建时使用 `docker compose up -d --build app`。确认 `/healthz` 返回正常，并抽查登录、渠道读取和中转站同步。
+跟随 `latest` 时先设置 `GATEWAYOPS_IMAGE_TAG=latest`，也可用 `docker pull ghcr.io/arronlong/gateway-ops:latest` 拉取。固定版本不能只拉 `latest`。
+
+确认 `/healthz` 返回正常，在“系统设置 → 版本与更新”核对版本、提交号与构建时间，并抽查登录、渠道读取和中转站同步。更新检查只提供信息，不能代替镜像升级。源码构建与启动命令见 [Docker Compose 部署](/deploy/docker-compose)。
 
 不要通过删除 PostgreSQL volume 来回滚升级。需要回滚时，先确认旧版本兼容性，并在受控维护窗口内使用升级前备份恢复。

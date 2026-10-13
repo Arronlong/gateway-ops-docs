@@ -30,10 +30,15 @@ Copy-Item .env.example .env
 
 ## 启动并检查
 
+当前 Compose 默认使用 GHCR 镜像，在 `.env` 中通过 `GATEWAYOPS_IMAGE_TAG` 选择标签；生产环境使用已发布固定版本。先拉取当前配置的镜像，再启动：
+
 ```bash
-docker compose up -d --build
+docker compose pull app
+docker compose up -d --no-build
 docker compose ps
 ```
+
+需要本地源码构建时，按 [Docker Compose 部署](/deploy/docker-compose) 的源码命令执行。
 
 默认 Web 地址为 `http://127.0.0.1:8080`。检查健康状态：
 

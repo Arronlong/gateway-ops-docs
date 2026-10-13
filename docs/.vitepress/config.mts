@@ -12,7 +12,7 @@ export default defineConfig({
     nav: [
       { text: "开始使用", link: "/start/overview" },
       { text: "使用指南", link: "/guide/dashboard" },
-      { text: "业务规则", link: "/logic/metrics" },
+      { text: "业务规则", link: "/logic/index" },
       { text: "架构", link: "/architecture/overview" },
       { text: `v${release.app_version}`, link: "/reference/versions" },
     ],
@@ -30,7 +30,6 @@ export default defineConfig({
           { text: "Docker Compose 部署", link: "/deploy/docker-compose" },
           { text: "配置参考", link: "/deploy/configuration" },
           { text: "安全、升级与备份", link: "/deploy/security-backup-upgrade" },
-          { text: "发布文档站", link: "/deploy/docs-site-pages" },
         ],
       },
       {
@@ -49,10 +48,22 @@ export default defineConfig({
       {
         text: "业务规则与指标",
         items: [
+          { text: "业务规则总览", link: "/logic/index" },
           { text: "指标口径", link: "/logic/metrics" },
+          { text: "渠道余额与调用记录", link: "/logic/channel-consumption" },
           { text: "成本与倍率", link: "/logic/cost-accounting" },
-          { text: "风险与自动调度", link: "/logic/risk-and-scheduling" },
+          { text: "延迟与稳定性", link: "/logic/latency-and-stability" },
+          { text: "渠道与中转站调用对比", link: "/logic/call-comparison" },
+          { text: "风险与调度概览", link: "/logic/risk-and-scheduling" },
+          { text: "自动调组", link: "/logic/auto-group-adjustment" },
+          { text: "自动优先级与召回", link: "/logic/auto-priority" },
+          { text: "账号操作与测试", link: "/logic/account-operations" },
+          { text: "本地号池与采购账本", link: "/logic/local-account-lifecycle" },
+          { text: "用户风险识别", link: "/logic/user-risk" },
           { text: "同步与数据处理", link: "/logic/synchronization" },
+          { text: "通知与验证码规则", link: "/logic/notifications-and-captcha" },
+          { text: "公开页面的数据规则", link: "/logic/public-monitor-and-pricing" },
+          { text: "访问与显示策略", link: "/logic/security-and-access" },
         ],
       },
       {
@@ -61,6 +72,7 @@ export default defineConfig({
           { text: "系统架构", link: "/architecture/overview" },
           { text: "主要数据流", link: "/architecture/data-flows" },
           { text: "本地开发", link: "/development/local-development" },
+          { text: "规则覆盖与维护", link: "/development/documentation-maintenance" },
         ],
       },
       {
@@ -68,6 +80,7 @@ export default defineConfig({
         items: [
           { text: "配置项", link: "/reference/configuration" },
           { text: "版本与更新", link: "/reference/versions" },
+          { text: "产品更新记录", link: "/reference/changelog" },
           { text: "常见问题", link: "/reference/troubleshooting" },
         ],
       },
@@ -86,4 +99,3 @@ export default defineConfig({
     },
   },
 })
-
