@@ -10,7 +10,7 @@
 
 ![公开分组调用监控示例](/images/public-relay-monitor.png)
 
-这不是主动探活。近期明细最多 60 条，窗口统计覆盖所选范围；关注数据完整性与更新时间，详见 [公开页面的数据规则](/logic/public-monitor-and-pricing)。
+这不是主动探活。近期明细最多 60 条，窗口统计覆盖所选范围。历史调用按页持续读取；延迟字段未提供时，桶状态按成功率呈现并提示字段缺失。关注数据完整性与更新时间，详见 [公开页面的数据规则](/logic/public-monitor-and-pricing) 和 [延迟与稳定性](/logic/latency-and-stability)。
 
 ## 模型价格
 

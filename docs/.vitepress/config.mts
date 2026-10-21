@@ -54,6 +54,7 @@ export default defineConfig({
           { text: "成本与倍率", link: "/logic/cost-accounting" },
           { text: "延迟与稳定性", link: "/logic/latency-and-stability" },
           { text: "渠道与中转站调用对比", link: "/logic/call-comparison" },
+          { text: "New API 中转站", link: "/logic/newapi-relay" },
           { text: "风险与调度概览", link: "/logic/risk-and-scheduling" },
           { text: "自动调组", link: "/logic/auto-group-adjustment" },
           { text: "自动优先级与召回", link: "/logic/auto-priority" },

@@ -4,7 +4,7 @@
 
 ## 本轮覆盖范围
 
-文档对照主项目 `v1.0.1` 源码与提交 `e668765` 整理；功能基线是主仓库 `docs/releases/v1.0.0.md` 记录的 `a02f956`，本轮另核对 `4d5a704` 与 `e668765` 的提交说明及实现，见 [产品更新记录](/reference/changelog)。自动策略、采样统计、现金与调用成本、配置生效、公开视图及批量副作用均有独立说明；代码提交与正式 Release 可能不同，应以实例提交号核对。
+文档已对照主项目已发布 `v1.0.2` 标签提交 `0e392e2` 整理；功能基线是主仓库 `docs/releases/v1.0.0.md` 记录的 `a02f956`，并核对 v1.0.2 的 10 个提交及实现，见 [产品更新记录](/reference/changelog)。自动策略、采样统计、现金与调用成本、配置生效、公开视图及批量副作用均有独立说明；部署实例仍应以实际提交号核对。
 
 | 功能 / 规则 | 文档入口 | 主要实现来源（主项目相对路径） |
 | --- | --- | --- |
@@ -15,6 +15,7 @@
 | 账本充值与采购联动 | [成本与倍率](/logic/cost-accounting) | `backend/internal/storage/operations.go` |
 | 历史自动关联清理与显式绑定 | [成本与倍率](/logic/cost-accounting) | `backend/internal/storage/relay_stations.go`、`backend/internal/relay/service.go` |
 | 综合评分、时间稳定性、输出速度与百分位 | [延迟与稳定性](/logic/latency-and-stability) | `frontend/lib/latency.ts`、`backend/internal/relay/latency_buckets.go`、`backend/internal/api/channel_usage.go` |
+| New API 管理适配、权限与能力边界 | [New API 中转站](/logic/newapi-relay) | `backend/internal/relay/newapi_admin.go`、`backend/internal/relay/newapi_operations.go`、`backend/internal/relay/newapi_reporting.go` |
 | 关联账号范围与近期调用匹配 | [调用对比](/logic/call-comparison) | `frontend/lib/channel-relay-association.ts`、`frontend/lib/recent-call-comparison.ts` |
 | 时间桶对齐、悬停与调用明细 | [调用对比](/logic/call-comparison) | `frontend/lib/relay-compare-bucket.ts`、`frontend/components/monitor/latency-stability-lane.tsx`、`frontend/components/monitor/channel-relay-compare.tsx` |
 | 跨站近期样本查询 | [调用对比](/logic/call-comparison) | `backend/internal/api/relay_stations.go`、`frontend/lib/queries.ts` |
