@@ -47,7 +47,7 @@ docker network create sub2api-deploy_sub2api-network
 image: ghcr.io/arronlong/gateway-ops:${GATEWAYOPS_IMAGE_TAG:-latest}
 ```
 
-未设置 `GATEWAYOPS_IMAGE_TAG` 时跟随 `latest`；生产环境建议在 `.env` 中填写已发布固定版本，例如 `GATEWAYOPS_IMAGE_TAG=1.0.2`。拉取与启动均使用 Compose 当前配置的同一标签：
+未设置 `GATEWAYOPS_IMAGE_TAG` 时跟随 `latest`；生产环境建议在 `.env` 中填写已发布的固定版本，例如 `GATEWAYOPS_IMAGE_TAG=1.0.3`。拉取与启动均使用 Compose 当前配置的同一标签：
 
 ```bash
 docker compose pull app
