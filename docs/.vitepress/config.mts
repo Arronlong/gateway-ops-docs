@@ -64,6 +64,7 @@ export default defineConfig({
           { text: "本地号池与采购账本", link: "/logic/local-account-lifecycle" },
           { text: "用户风险识别", link: "/logic/user-risk" },
           { text: "同步与数据处理", link: "/logic/synchronization" },
+          { text: "定时任务执行历史", link: "/logic/task-execution-history" },
           { text: "通知与验证码规则", link: "/logic/notifications-and-captcha" },
           { text: "公开页面的数据规则", link: "/logic/public-monitor-and-pricing" },
           { text: "访问与显示策略", link: "/logic/security-and-access" },

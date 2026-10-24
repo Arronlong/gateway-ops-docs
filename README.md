@@ -39,7 +39,7 @@ git push -u origin main
 
 ## 文档约定
 
-本版文档对照 GatewayOps `v1.0.3` 标签提交 `15e7745` 整理；应用实际版本、正式 Release 与镜像状态以主仓库 GitHub 为准。产品发布时同步维护 `docs/release.json` 中的 `app_version`，文档站导航和页脚会展示该版本；每次构建还会注入文档仓库提交号。版本及镜像发布规则见 `docs/reference/versions.md`。
+本版文档对照 GatewayOps `v1.0.4` 标签提交 `f6aa3ff` 整理；应用实际版本、正式 Release 与镜像状态以主仓库 GitHub 为准。产品发布时同步维护 `docs/release.json` 中的 `app_version`，文档站导航和页脚会展示该版本；每次构建还会注入文档仓库提交号。版本及镜像发布规则见 `docs/reference/versions.md`。
 
 - `docs/` 是面向用户和维护者的公开内容，不放真实密钥、内部地址或生产数据。
 - 业务口径以当前 GatewayOps 实现为准；产品行为变化时，同步检查相关文档。

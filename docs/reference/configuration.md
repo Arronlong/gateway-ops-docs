@@ -85,18 +85,37 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 | --- | --- | --- |
 | `channel_enabled` | `false` | 保存后替代旧渠道任务模式。 |
 | `channel_interval_minutes` | `30` | 小于 1 时归一为 30 分钟。 |
+| `channel_token_refresh_enabled` | `false` | 独立开启 Sub2API Token 维护，不替代渠道监控开关。 |
+| `channel_token_refresh_interval_minutes` | `30` | 接口要求大于等于 1 的整数分钟。 |
 | `relay_rate_enabled` | `false` | 配置且开启后才定时探测。 |
 | `relay_rate_interval_seconds` | `10` | 小于 5 秒时优先兼容正分钟字段，否则回退 10 秒。 |
 | `relay_snapshot_enabled` | `false` | 配置且开启后才定时同步快照。 |
 | `relay_snapshot_interval_seconds` | `3600` | 小于 5 秒时优先兼容正分钟字段，否则回退 3600 秒。 |
 
-中转站秒字段优先，分钟字段用于兼容旧设置。一次保存会记录这三类任务均已配置；关闭任务也会保存，不会自动恢复旧启动 cron。
+中转站秒字段优先，分钟字段用于兼容旧设置。一次保存会记录原有渠道同步、倍率探测、快照三类任务均已配置；关闭任务也会保存，不会自动恢复旧启动 cron。Token 刷新是独立的第四类维护任务，只处理启用监控的 Sub2API Token 模式凭据，详见 [同步与数据处理](/logic/synchronization)。
 
 显示设置中，运营目录、渠道页面以及倍率变化、渠道信息、近期调用、分组、稳定性、消费模块默认显示；分组默认不展开。iframe 默认关闭、模式为 `allowlist`、白名单为空。父级关闭保留子项值，隐藏不会停任务。
 
 监控指标时间窗 `recent_metrics_window_hours` 默认 1 小时，允许 1–24 的整数，保存在 PostgreSQL 的页面设置中。它统一影响渠道和中转站账号的缓存命中率、重试感知成功率、综合评分及对应排序；修改后需点击“监控指标”卡片的“保存监控设置”，或“界面与页面”标题行的“保存界面与监控设置”。该窗口不调整后台采集间隔或数据保留期，详见 [缓存指标与健康评分](/logic/cache-and-health-score)。
 
 中转站局部自动策略默认均关闭，召回等待默认 180 分钟（15–10080）；账号并发 / 手动优先级允许 1–1000，同账号重试允许 0–10。详见 [自动调组](/logic/auto-group-adjustment)、[自动优先级](/logic/auto-priority) 和 [账号操作与测试](/logic/account-operations)。
+
+## 鹈鹕测智设置
+
+以下是系统设置 API 的字段，持久化到 PostgreSQL；不是需要加入 `.env` 的启动变量。通过“保存测智设置”生效，不需要重启。
+
+| 字段 | 默认值 | 范围与说明 |
+| --- | --- | --- |
+| `pelican_page_enabled` | `true` | 控制作品展示与公开分组作品入口，不暂停生成。 |
+| `pelican_tasks_enabled` | `true` | 控制新手动 / 定时生成；来源自动开关仍默认关闭。 |
+| `pelican_plans` | 1 项，模型空、默认题目、`medium` | 1–8 项，每项含 `model`、`prompt`、`reasoning_effort`；每轮各执行一次。 |
+| `pelican_cron_expression` | `*/30 * * * *` | 五段 Cron，结合下列时区与有效时段。 |
+| `pelican_active_timezone` | `Asia/Shanghai` | 已保存的运行时区，不自动取浏览器 / 服务器时区。 |
+| `pelican_active_start` / `pelican_active_end` | `08:00` / `22:00` | `HH:mm`，含开始、不含结束；相等为全天，支持跨午夜。 |
+| `pelican_active_weekdays` | `[0,1,2,3,4,5,6]` | 0 为周日、6 为周六，至少一天，不重复；跨午夜按开始日判断。 |
+| `pelican_history_count` | `30` | 每个账号 / 分组 1–100 份，含失败结果；调低立即删除旧作品。 |
+
+旧的 `pelican_model`、`pelican_prompt`、`pelican_reasoning_effort` 保留兼容，当前以方案列表为准；不要继续按旧 `pelican_parallel_count` 理解重复生成数量。账号 / 分组自动开关和单次参数与全局字段分离，详见 [鹈鹕测智与作品历史](/logic/pelican-testing)。
 
 ## Compose 专用变量与出站代理
 

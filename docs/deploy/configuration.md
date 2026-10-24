@@ -24,7 +24,7 @@ Compose 部署先配置项目根目录 `.env`，再确认需要的变量确实�
 | 服务模式 / 日志等级 | `release` / `info` | 与后端单独运行的默认模式不同。 |
 | `TZ` | `Asia/Shanghai` | 影响进程自然日统计窗口。 |
 
-当前 Compose 的 `app.image` 默认是 `ghcr.io/arronlong/gateway-ops:${GATEWAYOPS_IMAGE_TAG:-latest}`。在 `.env` 中设置 `GATEWAYOPS_IMAGE_TAG` 即可选择标签，例如已发布的 `1.0.3`；未设置时跟随 `latest`。旧模板需先核对镜像仓库。拉取命令与完整部署步骤见 [Docker Compose 部署](/deploy/docker-compose)。
+当前 Compose 的 `app.image` 默认是 `ghcr.io/arronlong/gateway-ops:${GATEWAYOPS_IMAGE_TAG:-latest}`。在 `.env` 中设置 `GATEWAYOPS_IMAGE_TAG` 即可选择标签，例如 `1.0.4`；使用前确认镜像与 Release 已发布，未设置时跟随 `latest`。旧模板需先核对镜像仓库。拉取命令与完整部署步骤见 [Docker Compose 部署](/deploy/docker-compose)。
 
 ## 透传额外启动参数
 
