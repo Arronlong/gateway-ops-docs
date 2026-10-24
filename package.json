@@ -5,9 +5,10 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "docs:dev": "vitepress dev docs --host 127.0.0.1",
-    "docs:build": "vitepress build docs",
+    "docs:build": "node scripts/build-versioned-docs.mjs",
     "docs:check": "node scripts/check-docs.mjs",
-    "docs:preview": "vitepress preview docs --host 127.0.0.1"
+    "docs:preview": "vitepress preview docs --host 127.0.0.1",
+    "test:versions": "node --test scripts/version-routing.test.mjs scripts/version-catalog.test.mjs"
   },
   "devDependencies": {
     "vitepress": "1.6.4"

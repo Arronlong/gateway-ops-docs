@@ -3,7 +3,8 @@ import { resolve, relative, dirname, extname, posix } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..")
-const docs = resolve(root, "docs")
+const docs = resolve(process.env.DOCS_ROOT ?? resolve(root, "docs"))
+const dist = resolve(process.env.DOCS_DIST ?? resolve(docs, ".vitepress/dist"))
 const decoder = new TextDecoder("utf-8", { fatal: true })
 const errors = []
 const pages = new Map()
@@ -52,7 +53,7 @@ function checkTarget(target, source, route, image = false) {
   else links++
   if (page && !image) {
     if (rawAnchor) {
-      const html = resolve(docs, ".vitepress/dist", relative(docs, page.path).replace(/\.md$/, ".html"))
+      const html = resolve(dist, relative(docs, page.path).replace(/\.md$/, ".html"))
       if (!existsSync(html)) errors.push(`Build required for anchor: ${source} -> ${target}`)
       else {
         const anchor = decodeURIComponent(rawAnchor)
@@ -91,7 +92,10 @@ const configPath = resolve(docs, ".vitepress/config.mts")
 const config = readText(configPath)
 const navigation = new Set()
 for (const match of config.matchAll(/\blink:\s*"([^"]+)"/g)) {
-  checkTarget(match[1], "docs/.vitepress/config.mts", "/index")
+  const route = match[1].split(/[?#]/, 1)[0].replace(/\/$/, "") || "/"
+  if (process.env.DOCS_HISTORICAL !== "1" || pages.has(route) || pages.has(route + "/index")) {
+    checkTarget(match[1], "docs/.vitepress/config.mts", "/index")
+  }
   navigation.add(match[1])
 }
 for (const page of new Set(pages.values())) {

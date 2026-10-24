@@ -1,5 +1,49 @@
+import { resolve } from "node:path"
 import { defineConfig } from "vitepress"
 import release from "../release.json"
+import manifest from "../versions.json"
+import { normalizeBase, normalizeRoute } from "../../scripts/version-routing.mjs"
+import { resolveVersionCatalog } from "../../scripts/version-catalog.mjs"
+
+const repoRoot = process.env.DOCS_REPOSITORY_ROOT ?? process.cwd()
+const currentDocsRoot = process.env.DOCS_CURRENT_ROOT ?? resolve(repoRoot, "docs")
+const catalog = resolveVersionCatalog(manifest, { repoRoot, currentDocsRoot })
+const currentVersion = process.env.DOCS_VERSION ?? release.app_version
+const currentBase = normalizeBase(process.env.DOCS_BASE ?? "/")
+const rootBase = normalizeBase(process.env.DOCS_ROOT_BASE ?? currentBase)
+const origin = process.env.DOCS_ORIGIN ?? "http://127.0.0.1:5173"
+const sourceRef = process.env.DOCS_SOURCE_REF ?? "main"
+const current = catalog.versions.find(({ version }) => version === currentVersion)
+
+if (!current) throw new Error(`Documentation version is missing from catalog: ${currentVersion}`)
+
+const currentRoutes = new Set(current.routes)
+function routeExists(link: string) {
+  if (/^(?:[a-z]+:|\/\/)/i.test(link)) return true
+  return currentRoutes.has(normalizeRoute(link.split(/[?#]/, 1)[0]))
+}
+
+function filterNavigation(items: any[]): any[] {
+  return items.flatMap((item) => {
+    if ("link" in item) return routeExists(item.link) ? [item] : []
+    if ("component" in item) return [item]
+    const children = filterNavigation(item.items)
+    return children.length ? [{ ...item, items: children }] : []
+  })
+}
+
+const versionNav = {
+  component: "VersionSwitcher",
+  props: {
+    currentVersion,
+    latestVersion: catalog.latest,
+    rootBase,
+    currentBase,
+    origin,
+    fallbackRoute: catalog.fallbackRoute,
+    versions: catalog.versions,
+  },
+}
 
 export default defineConfig({
   lang: "zh-CN",
@@ -9,14 +53,14 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   themeConfig: {
-    nav: [
+    nav: filterNavigation([
       { text: "开始使用", link: "/start/overview" },
       { text: "使用指南", link: "/guide/dashboard" },
       { text: "业务规则", link: "/logic/index" },
       { text: "架构", link: "/architecture/overview" },
-      { text: `v${release.app_version}`, link: "/reference/versions" },
-    ],
-    sidebar: [
+      versionNav,
+    ]),
+    sidebar: filterNavigation([
       {
         text: "了解 GatewayOps",
         items: [
@@ -88,13 +132,13 @@ export default defineConfig({
           { text: "常见问题", link: "/reference/troubleshooting" },
         ],
       },
-    ],
+    ]),
     search: { provider: "local" },
     socialLinks: [
       { icon: "github", link: "https://github.com/Arronlong/gateway-ops" },
     ],
     editLink: {
-      pattern: "https://github.com/Arronlong/gateway-ops-docs/edit/main/docs/:path",
+      pattern: `https://github.com/Arronlong/gateway-ops-docs/edit/${sourceRef}/docs/:path`,
       text: "在 GitHub 上编辑此页",
     },
     footer: {
