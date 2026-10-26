@@ -96,7 +96,14 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 
 显示设置中，运营目录、渠道页面以及倍率变化、渠道信息、近期调用、分组、稳定性、消费模块默认显示；分组默认不展开。iframe 默认关闭、模式为 `allowlist`、白名单为空。父级关闭保留子项值，隐藏不会停任务。
 
-监控指标时间窗 `recent_metrics_window_hours` 默认 1 小时，允许 1–24 的整数，保存在 PostgreSQL 的页面设置中。它统一影响渠道和中转站账号的缓存命中率、重试感知成功率、综合评分及对应排序；修改后需点击“监控指标”卡片的“保存监控设置”，或“界面与页面”标题行的“保存界面与监控设置”。该窗口不调整后台采集间隔或数据保留期，详见 [缓存指标与健康评分](/logic/cache-and-health-score)。
+监控指标参数通过系统设置 API 持久化到 PostgreSQL 的页面设置，不是 `.env` 启动变量：
+
+| 字段 | 默认值 | 范围与作用 |
+| --- | --- | --- |
+| `recent_metrics_window_hours` | `1` | 1–24 的整数小时；近期指标的回看窗口。下拉提供常用时长并兼容已保存的其他有效值。 |
+| `recent_metrics_limit` | `60` | 1–200 的整数；近期样本读取与统计数量上限，存储键为 `ui.monitor.recent_metrics_limit`。 |
+
+两者共同影响渠道和中转站账号的缓存命中率、重试感知成功率、综合评分及对应排序；最近数量还控制最近调用和对比读取的样本上限。修改后需点击“监控指标”卡片的“保存监控设置”，或“界面与页面”标题行的“保存界面与监控设置”。参数不调整后台采集间隔、历史保留期或历史时间桶，详见 [缓存指标与健康评分](/logic/cache-and-health-score)。
 
 中转站局部自动策略默认均关闭，召回等待默认 180 分钟（15–10080）；账号并发 / 手动优先级允许 1–1000，同账号重试允许 0–10。详见 [自动调组](/logic/auto-group-adjustment)、[自动优先级](/logic/auto-priority) 和 [账号操作与测试](/logic/account-operations)。
 
@@ -108,7 +115,7 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 | --- | --- | --- |
 | `pelican_page_enabled` | `true` | 控制作品展示与公开分组作品入口，不暂停生成。 |
 | `pelican_tasks_enabled` | `true` | 控制新手动 / 定时生成；来源自动开关仍默认关闭。 |
-| `pelican_plans` | 1 项，模型空、默认题目、`medium` | 1–8 项，每项含 `model`、`prompt`、`reasoning_effort`；每轮各执行一次。 |
+| `pelican_plans` | 1 项，启用、模型空、默认题目、`medium` | 1–8 项，每项含 `enabled`、`model`、`prompt`、`reasoning_effort`；每轮只执行已启用且配置模型的方案。旧项缺少 `enabled` 时按 `true` 处理。 |
 | `pelican_cron_expression` | `*/30 * * * *` | 五段 Cron，结合下列时区与有效时段。 |
 | `pelican_active_timezone` | `Asia/Shanghai` | 已保存的运行时区，不自动取浏览器 / 服务器时区。 |
 | `pelican_active_start` / `pelican_active_end` | `08:00` / `22:00` | `HH:mm`，含开始、不含结束；相等为全天，支持跨午夜。 |

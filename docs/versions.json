@@ -1,8 +1,9 @@
 {
-  "latest": "1.0.5",
+  "latest": "1.0.6",
   "fallbackRoute": "/start/overview",
   "versions": [
-    {"version": "1.0.5", "source": "working-tree"},
+    {"version": "1.0.6", "source": "working-tree"},
+    {"version": "1.0.5", "source": "e06235690925a1f0c9c4dbf981e56455df70e222"},
     {"version": "1.0.4", "source": "f1656c81a6bbe8ae2caef64a4965e1458bed86c2"},
     {"version": "1.0.3", "source": "be7bb8be9f8005f98c1f15a8bc3ef52ba23b7800"},
     {"version": "1.0.2", "source": "a0bcc8633cb0c219b79b604951d08f6f93e58fc5"},

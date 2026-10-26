@@ -4,7 +4,7 @@
 
 ## 本轮覆盖范围
 
-文档对照主项目 `v1.0.5` 标签提交 `7f2b0b3` 及正式 Release 整理；本轮核对 `v1.0.4..v1.0.5` 范围内的 9 个提交。补充预警对象分类与属性筛选、指标和事件状态、安全自动化恢复、独立通知冷却与重试，以及 DeepSeek 官方状态适配；不把设计规格、工作分支说明或未发布开发内容直接当成产品能力，见 [产品更新记录](/reference/changelog)。
+文档对照主项目 `v1.0.6` 标签提交 `e78427d` 及正式 Release 整理，本轮核对 `v1.0.5..v1.0.6` 范围内的 7 个提交。补充方案启用过滤、旧方案兼容、手动候选、生成中记录与原位更新，以及统计时长 / 最近数量的保存、校验和计算范围；同步导航刷新变化。不把标签直接等同于正式 Release 或镜像发布完成，见 [产品更新记录](/reference/changelog)。
 
 | 功能 / 规则 | 文档入口 | 主要实现来源（主项目相对路径） |
 | --- | --- | --- |
@@ -16,8 +16,8 @@
 | 历史自动关联清理与显式绑定 | [成本与倍率](/logic/cost-accounting) | `backend/internal/storage/relay_stations.go`、`backend/internal/relay/service.go` |
 | 综合评分、时间稳定性、输出速度与百分位 | [延迟与稳定性](/logic/latency-and-stability) | `frontend/lib/latency.ts`、`backend/internal/relay/latency_buckets.go`、`backend/internal/api/channel_usage.go` |
 | 近期 Token 缓存、尝试成功率和四项账号评分 | [缓存指标与健康评分](/logic/cache-and-health-score) | `frontend/lib/recent-request-metrics.ts`、`frontend/lib/latency.ts`、`backend/internal/connector/newapi/cache_metrics.go` |
-| 统计时长配置与保存 | [系统设置](/guide/system-settings) | `backend/internal/storage/settings.go`、`backend/internal/api/system_settings.go`、`frontend/app/system-settings-page.tsx` |
-| 多来源测智、全局方案、单次参数、作品删除与沙箱 | [鹈鹕测智](/logic/pelican-testing) | `backend/internal/relay/pelican.go`、`pelican_upstream.go`、`group_pelican.go`、`backend/internal/storage/pelican_settings.go`、`pelican_schedule.go`、`pelican_sources.go`、`frontend/components/relay/pelican.tsx` |
+| 统计时长、最近数量与保存 | [系统设置](/guide/system-settings) | `backend/internal/storage/settings.go`、`backend/internal/api/system_settings.go`、`frontend/app/system-settings-page.tsx` |
+| 多来源测智、方案启用、生成中记录、单次参数、作品删除与沙箱 | [鹈鹕测智](/logic/pelican-testing) | `backend/internal/relay/pelican.go`、`pelican_upstream.go`、`group_pelican.go`、`backend/internal/storage/pelican_settings.go`、`pelican_schedule.go`、`pelican_sources.go`、`frontend/components/relay/pelican.tsx` |
 | 自动任务执行状态、日志、分页与重启中断 | [定时任务执行历史](/logic/task-execution-history) | `backend/internal/scheduler/task_runs.go`、`backend/internal/storage/task_runs.go`、`backend/internal/api/task_runs.go`、`frontend/components/system/task-history.tsx` |
 | Sub2API Token 独立定时维护 | [同步与数据处理](/logic/synchronization) | `backend/internal/channel/token_refresh.go`、`backend/internal/monitor/token_refresh.go`、`backend/internal/scheduler/token_refresh.go` |
 | New API 管理适配、权限与能力边界 | [New API 中转站](/logic/newapi-relay) | `backend/internal/relay/newapi_admin.go`、`backend/internal/relay/newapi_operations.go`、`backend/internal/relay/newapi_reporting.go` |
