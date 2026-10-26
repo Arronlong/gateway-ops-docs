@@ -4,7 +4,7 @@
 
 ## 本轮覆盖范围
 
-文档对照主项目 `v1.0.4` 标签提交 `f6aa3ff` 整理；功能基线是主仓库 `docs/releases/v1.0.0.md` 记录的 `a02f956`，本轮核对 `v1.0.3..v1.0.4` 范围内的 7 个提交及标签源码，见 [产品更新记录](/reference/changelog)。主要补充测智多来源、统一方案、单次参数、任务执行历史和 Token 维护；不把工作区尚未发布的变更写入本版文档。部署实例仍应以实际提交号核对。
+文档对照主项目 `v1.0.5` 标签提交 `7f2b0b3` 及正式 Release 整理；本轮核对 `v1.0.4..v1.0.5` 范围内的 9 个提交。补充预警对象分类与属性筛选、指标和事件状态、安全自动化恢复、独立通知冷却与重试，以及 DeepSeek 官方状态适配；不把设计规格、工作分支说明或未发布开发内容直接当成产品能力，见 [产品更新记录](/reference/changelog)。
 
 | 功能 / 规则 | 文档入口 | 主要实现来源（主项目相对路径） |
 | --- | --- | --- |
@@ -30,11 +30,14 @@
 | 本地匹配、状态与采购 | [本地号池](/logic/local-account-lifecycle) | `backend/internal/storage/operations.go` |
 | 用户注册风险与管理员保护 | [用户风险识别](/logic/user-risk) | `backend/internal/relay/service.go`：`registrationIPs`、`userRiskScore`、`DeleteUsers` |
 | 同步顺序、任务重叠与保留 | [同步与数据处理](/logic/synchronization) | `backend/internal/scheduler/scheduler.go`、`backend/internal/storage/settings.go`、`backend/internal/relay/service.go` |
+| 预警对象分类、指标、阈值、状态、采集与属性过滤 | [预警判定](/logic/alerts-and-automation) | `backend/internal/alert/{collector,collector_scope,conditions,state,scope,validation}.go`、`frontend/components/alerts/rule-form.ts`、`alert-rule-dialog.tsx` |
+| 远端启停所有权、人工介入、多规则约束及动作审计 | [安全自动化](/logic/alerts-and-automation) | `backend/internal/alert/automation.go`、`backend/internal/relay/alert_automation.go`、`backend/internal/storage/alerts.go` |
+| 预警渠道关联、发送冷却与恢复重试 | [预警通知](/logic/alerts-and-automation) | `backend/internal/alert/service.go`、`backend/internal/notify/dispatcher.go`、`backend/internal/storage/notifications.go` |
 | 通知订阅、阈值、冷却、重试 | [通知规则](/logic/notifications-and-captcha) | `backend/internal/notify/dispatcher.go`、`backend/internal/notify/policy.go`、`backend/internal/notify/subscription.go` |
 | CAPTCHA 与登录 | [验证码规则](/logic/notifications-and-captcha) | `backend/internal/channel/service.go`、`backend/internal/captcha` |
 | 公开监控与最终失败合并 | [公开数据规则](/logic/public-monitor-and-pricing) | `backend/internal/relay/group_monitor.go` |
 | 价格覆盖、独立生图与缓存 | [公开数据规则](/logic/public-monitor-and-pricing) | `backend/internal/relay/model_pricing.go` |
-| 官方状态与按天可用率 | [公开数据规则](/logic/public-monitor-and-pricing) | `backend/internal/api/public_service_status.go` |
+| 官方状态、按天历史与 DeepSeek 官方可用率 | [公开数据规则](/logic/public-monitor-and-pricing) | `backend/internal/api/public_service_status.go`、`deepseek_service_status.go`、`frontend/app/public-service-status-page.tsx` |
 | 启动默认值、环境映射与 Compose | [配置项](/reference/configuration) | `backend/internal/config/config.go`、`backend/config.example.yaml`、`docker-compose.yml`、`.env.example` |
 | 认证、密钥、页面隐藏与 iframe | [访问策略](/logic/security-and-access) | `backend/cmd/server/main.go`、`backend/internal/crypto/cipher.go`、`backend/internal/api/frame_policy.go`、`backend/internal/security/hostglob.go` |
 | 版本 API、更新与镜像发布 | [版本与更新](/reference/versions) | `backend/internal/version/version.go`、`backend/internal/api/version.go`、`frontend/components/system/version-card.tsx`、主项目 `.github/workflows/publish.yml` |

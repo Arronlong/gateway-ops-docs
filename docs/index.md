@@ -14,6 +14,7 @@ GatewayOps 是面向 NewAPI / Sub2API 生态的自托管运营管理平台。本
 | 启动一套 GatewayOps | [快速开始](/start/quick-start) |
 | 在服务器上部署和升级 | [Docker Compose 部署](/deploy/docker-compose) |
 | 学会使用某个页面 | [产品使用指南](/guide/dashboard) |
+| 配置预警、消息与安全自动化 | [预警中心](/guide/alerts) |
 | 查找指标、配置和处理逻辑 | [业务规则总览](/logic/index) |
 | 查清数字的计算口径 | [指标口径](/logic/metrics) |
 | 对照渠道与中转站调用 | [渠道与中转站调用对比](/logic/call-comparison) |
@@ -26,4 +27,4 @@ GatewayOps 是面向 NewAPI / Sub2API 生态的自托管运营管理平台。本
 
 ## 文档范围
 
-本文档已同步至 GatewayOps `v1.0.4` 标签提交 `f6aa3ff`；变更内容见 [产品更新记录](/reference/changelog)。导航版本表示文档适用范围，实际部署版本请在系统设置中核对。不同版本的功能可能略有差异；升级前请查看对应正式 Release。所有示例均为虚构配置，不代表真实环境。
+本文档已同步至 GatewayOps `v1.0.5` 标签提交 `7f2b0b3`；变更内容见 [产品更新记录](/reference/changelog)。导航版本表示文档适用范围，实际部署版本请在系统设置中核对。不同版本的功能可能略有差异；升级前请查看对应正式 Release。所有示例均为虚构配置，不代表真实环境。

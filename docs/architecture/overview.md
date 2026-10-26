@@ -9,6 +9,7 @@ GatewayOps 采用 Go 后端、React 前端和 PostgreSQL。生产 Docker 镜像�
 | React + TypeScript 前端 | 展示运营总览、管理页面、公开页面和交互状态。 |
 | Go + Gin 后端 | 提供 API、连接外部服务、执行统计和业务规则。 |
 | PostgreSQL | 持久化渠道、监控快照、通知、账本和中转站本地快照。 |
+| 预警引擎 | 采集归一化指标、维护规则 / 事件状态、审计远端动作并关联通知；自动化当前仅适配 Sub2API。 |
 | 后台调度器 | 执行余额监控、倍率监控、数据清理及已配置的周期任务。 |
 | NewAPI / Sub2API 连接器 | 按站点类型访问渠道或 Sub2API 管理接口。 |
 | 通知与 CAPTCHA Provider | 按配置连接外部通知服务和 Turnstile 解题服务。 |

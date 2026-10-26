@@ -36,3 +36,7 @@
 后台接口为 `GET /api/tasks/:task/runs` 和 `GET /api/tasks/:task/runs/:id`，开启后台认证时需要登录。列表分页 `page >= 1`、`page_size=1–100`，默认 20；未知任务或不存在的记录返回 404，非法分页返回 400。
 
 同步生效、任务重叠及业务数据保留见 [同步与数据处理](/logic/synchronization)，测智来源与生成结果见 [鹈鹕测智与作品历史](/logic/pelican-testing)。
+
+## 与预警动作记录的区别
+
+v1.0.5 的预警事件与远端启停动作在预警中心查看，不自动等同于本页的任务执行记录。规则命中、动作成功及通知成功分别记录；预警采样周期也不沿用现有快照任务的执行结果。详见 [预警中心](/guide/alerts) 和 [预警判定与安全自动化](/logic/alerts-and-automation)。

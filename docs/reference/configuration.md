@@ -124,3 +124,7 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 当前 Compose 读取 `.outbound-proxy.env`，并只显式透传其 `environment` 列出的配置。`.env.example` 的 `GATEWAYOPS_HTTP_PROXY / GATEWAYOPS_HTTPS_PROXY / GATEWAYOPS_NO_PROXY` 不是当前后端 YAML 字段，也未由该 Compose 自动映射为标准代理变量；只写进 `.env` 不会自动启用出站代理。
 
 需要代理时在容器环境提供 `HTTP_PROXY / HTTPS_PROXY / NO_PROXY`，可通过 `env_file` 或显式映射，示例见 [部署配置](/deploy/configuration)。`172.31.0.1:7890` 只是特定主机的示例地址，应替换为容器可达地址或清空。
+
+## 预警数据库设置
+
+v1.0.5 的预警总开关与频率通过 `GET/PUT /api/alerts/settings` 持久化，不是启动环境变量，也尚无独立前端设置表单。默认开启，评估固定 60 秒；倍率与用量各默认 60 秒、允许 60–120 秒；余额默认 300 秒、允许 300–600 秒。规则阈值、属性过滤及通知冷却分别保存在规则中，具体字段与范围见 [预警判定与安全自动化](/logic/alerts-and-automation)。
