@@ -4,7 +4,7 @@
 
 ## 本轮覆盖范围
 
-文档对照主项目 `v1.0.7` 标签提交 `82b4d07` 及正式 Release 整理，本轮核对 `v1.0.6..v1.0.7` 范围内的 3 个提交。补充全局品牌的草稿保存、图片转换与独立校验、公开读取及回退，以及 TPS 聚合公式、过滤、零输出、封顶独立评分与健康分的区别。不把标签直接等同于正式 Release 或镜像发布完成，见 [产品更新记录](/reference/changelog)。
+文档对照主项目 `v1.0.8` 标签提交 `383582c` 及正式 Release 整理，本轮核对 `v1.0.7..v1.0.8` 范围内的 5 个提交。补充公开分组近期指标的后端采样、Token 与尝试口径、完整性、缓存键和浏览器缓存版本；区分最终请求与重试成功率，记录请求类型兼容、分组卡片位置及导航换行。不把标签直接等同于正式 Release 或镜像发布完成，见 [产品更新记录](/reference/changelog)。
 
 | 功能 / 规则 | 文档入口 | 主要实现来源（主项目相对路径） |
 | --- | --- | --- |
@@ -18,6 +18,7 @@
 | 近期 Token 缓存、尝试成功率和四项账号评分 | [缓存指标与健康评分](/logic/cache-and-health-score) | `frontend/lib/recent-request-metrics.ts`、`frontend/lib/latency.ts`、`backend/internal/connector/newapi/cache_metrics.go` |
 | 全局品牌、名称与图片校验、公开读取 | [系统设置](/guide/system-settings)、[配置项](/reference/configuration) | `backend/internal/storage/branding.go`、`backend/internal/api/branding.go`、`system_settings.go`、`frontend/lib/branding.ts`、`frontend/components/product-branding.tsx`、`system/branding-settings-card.tsx` |
 | TPS 聚合、样本排除、封顶评分与独立排序 | [缓存指标与健康评分](/logic/cache-and-health-score) | `frontend/lib/recent-request-metrics.ts`、`recent-request-metrics.test.ts`、`frontend/components/monitor/recent-request-metrics.tsx`、`channel-cards.tsx`、`frontend/app/relay-stations-page.tsx` |
+| 公开分组近期采样、重试口径、完整性及缓存 | [公开页面的数据规则](/logic/public-monitor-and-pricing) | `backend/internal/relay/group_monitor.go`、`group_monitor_metrics.go`、`group_monitor_metrics_test.go`、`frontend/lib/public-relay-monitor.ts`、`frontend/app/public-relay-monitor-page.tsx` |
 | 统计时长、最近数量与保存 | [系统设置](/guide/system-settings) | `backend/internal/storage/settings.go`、`backend/internal/api/system_settings.go`、`frontend/app/system-settings-page.tsx` |
 | 多来源测智、方案启用、生成中记录、单次参数、作品删除与沙箱 | [鹈鹕测智](/logic/pelican-testing) | `backend/internal/relay/pelican.go`、`pelican_upstream.go`、`group_pelican.go`、`backend/internal/storage/pelican_settings.go`、`pelican_schedule.go`、`pelican_sources.go`、`frontend/components/relay/pelican.tsx` |
 | 自动任务执行状态、日志、分页与重启中断 | [定时任务执行历史](/logic/task-execution-history) | `backend/internal/scheduler/task_runs.go`、`backend/internal/storage/task_runs.go`、`backend/internal/api/task_runs.go`、`frontend/components/system/task-history.tsx` |

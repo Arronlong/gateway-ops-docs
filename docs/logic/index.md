@@ -2,7 +2,7 @@
 
 这里解释 GatewayOps 页面数字从哪里来、配置何时生效，以及系统在什么条件下修改远端数据。先按问题定位规则，再结合对应使用指南操作。
 
-这些说明已同步至 GatewayOps `v1.0.7` 标签提交 `82b4d07`；变化见 [产品更新记录](/reference/changelog)。部署实例可能使用不同提交；请先在系统设置查看版本、提交号和构建时间，再核对 [版本与更新](/reference/versions)。
+这些说明已同步至 GatewayOps `v1.0.8` 标签提交 `383582c`；变化见 [产品更新记录](/reference/changelog)。部署实例可能使用不同提交；请先在系统设置查看版本、提交号和构建时间，再核对 [版本与更新](/reference/versions)。
 
 ## 指标与成本
 
@@ -32,7 +32,7 @@
 | 自动任务状态、耗时、执行日志、Token 刷新记录与中断 | [定时任务执行历史](/logic/task-execution-history) |
 | 预警对象筛选、阈值、事件状态及安全停用 / 恢复 | [预警判定与安全自动化](/logic/alerts-and-automation) |
 | 订阅过滤、倍率阈值、冷却、重试与验证码 | [通知与验证码规则](/logic/notifications-and-captcha) |
-| 公开监控状态、成功率、模型价格与官方服务状态 | [公开页面的数据规则](/logic/public-monitor-and-pricing) |
+| 公开监控状态、最终 / 重试成功率、近期缓存与 TPS、模型价格及官方状态 | [公开页面的数据规则](/logic/public-monitor-and-pricing) |
 | 页面隐藏、后台认证、凭据密钥和 iframe 白名单 | [访问与显示策略](/logic/security-and-access) |
 
 ## 阅读时先确认这几件事
