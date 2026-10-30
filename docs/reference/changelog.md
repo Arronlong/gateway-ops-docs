@@ -1,8 +1,29 @@
 # 产品更新记录
 
-本页依据主仓库 Git 标签、提交记录、可核验的发布说明和对应源码整理功能变化和升级影响。当前文档更新到 GatewayOps `v1.0.8` 标签提交 `383582c`；每个版本按其标签与实现记录，不以源码默认版本代替实际构建版本。
+本页依据主仓库 Git 标签、提交记录、可核验的发布说明和对应源码整理功能变化和升级影响。当前文档更新到 GatewayOps `v1.0.9` 标签提交 `392bc60`；每个版本按其标签与实现记录，不以源码默认版本代替实际构建版本。
 
-源码和 Dockerfile 未注入构建参数时的默认版本仍为 `1.0.1`；由 `v1.0.8` 标签触发的构建使用标签注入 `1.0.8`。开发版或自行编译版请以实例实际显示的提交号和构建信息为准。
+源码和 Dockerfile 未注入构建参数时的默认版本仍为 `1.0.1`；由 `v1.0.9` 标签触发的构建使用标签注入 `1.0.9`。开发版或自行编译版请以实例实际显示的提交号和构建信息为准。
+
+## 2026 年 10 月 30 日：v1.0.9
+
+对应标签提交：`392bc60f9388e4fba38f1e9f85ffed3ec00151fc`。本次包含 `v1.0.8..v1.0.9` 的 3 个提交，依据 [GitHub Release](https://github.com/Arronlong/gateway-ops/releases/tag/v1.0.9)、[提交记录](https://github.com/Arronlong/gateway-ops/compare/v1.0.8...v1.0.9) 和标签源码整理。
+
+### 渠道测智密钥与 NewAPI
+
+- 渠道新增独立测智 API Key，可填写、替换或清除；最长 4096 字节，使用 `APP_SECRET` 加密保存。读取配置只返回是否已配置，不回显密钥。
+- NewAPI 关联渠道必须配置该 Key，通过对应渠道的可用模型和 OpenAI 兼容 Chat Completions 调用上游；这是渠道关联路径，不代表 NewAPI 账号凭据导出直连已支持。
+- Sub2API 渠道 Key 优先使用，未配置时继续用原账号导出凭据，并保留 API Key / OAuth 与 Responses / Chat Completions 选择。
+- 同一中转站账号关联多个渠道且密钥不同，应从对应渠道发起。分组测智仍使用目标分组专用网关 Key。
+
+### 统一认证 Header
+
+- NewAPI 与 Sub2API 的渠道 Headers 用于登录、认证、Token 刷新及后续请求。
+- 模板支持 `{{username}}`、`{{password}}`、`{{turnstile_token}}`、`{{cookie}}`、`{{user_id}}`、`{{token}}`、`{{access_token}}`。会话值未产生时，依赖该值的 Header 不发送。
+- 自定义 Header 可覆盖同名内置认证 Header。静态 Header 值随受认证保护的渠道配置返回，不应放入长期密钥。
+
+### 镜像发布与升级
+
+镜像工作流现在只响应版本标签；普通 `main` 提交和手动触发不再启动镜像构建。启动时自动升级渠道密钥及测智关联所需表结构，旧数据库不需手工执行 SQL。备份数据库时保留原 `APP_SECRET`，否则无法解密已存渠道密钥。详情见 [渠道管理](/guide/channels)、[测智规则](/logic/pelican-testing) 和 [版本与更新](/reference/versions)。
 
 ## 2026 年 10 月 27 日：v1.0.8
 

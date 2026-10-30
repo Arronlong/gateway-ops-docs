@@ -109,6 +109,17 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 
 公开分组直接复用上述两字段，无新增环境变量或独立采样开关。其 `recent_metrics` 与公开历史范围、最终请求成功率、最多 60 条调用明细分别计算；接口完整性与缓存规则见 [公开页面的数据规则](/logic/public-monitor-and-pricing)。
 
+## 渠道测智 Key 与 Header 配置
+
+以下属于每个渠道的 PostgreSQL 业务配置，不是 `.env` 启动变量。新增或编辑渠道时保存；Key 与渠道登录凭据分开：
+
+| 字段 | 作用、校验与回显 |
+| --- | --- |
+| `pelican_api_key` | 创建 / 更新渠道时可提供，最多 4096 字节，服务端加密保存到 `channels.pelican_key_cipher`。更新请求不含该字段时保持不变；显式传空字符串清除。渠道响应只返回 `pelican_key_configured`，不回显密钥。 |
+| `login_headers` | 渠道连接器自定义 Header 列表，应用于登录、会话校验、Token 刷新及后续请求；支持 `username`、`password`、`turnstile_token`、`cookie`、`user_id`、`token`、`access_token` 模板。占位值不可用时跳过该 Header，同名自定义 Header 覆盖内置认证 Header。配置值随有权限读取的渠道配置返回，勿放明文长期秘密。 |
+
+NewAPI 渠道测智需要关联账号及其渠道 Key；Sub2API Key 可选，留空继续使用账号导出凭据直连。Key 不控制登录 / 同步，也不用于分组测智。数据库启动迁移会添加渠道密钥和测智配置关联字段，升级旧库不需手工执行 SQL；备份必须保留原 `APP_SECRET` 才能解密。流程见 [渠道管理](/guide/channels) 与 [鹈鹕测智规则](/logic/pelican-testing)。
+
 ## 品牌设置与公开读取
 
 品牌通过受后台认证保护的 `GET/PUT /api/system-settings` 读取和保存，使用现有 `app_settings` 表，不是启动环境变量。页面点击“保存品牌设置”生效；系统设置 PUT 的请求体上限为 2 MiB，超过限制会失败，不会截断后保存。
