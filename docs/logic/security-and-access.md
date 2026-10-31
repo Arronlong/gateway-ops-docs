@@ -48,6 +48,6 @@
 
 ## 渠道测智 Key 与自定义 Header
 
-渠道 `pelican_api_key` 使用 `APP_SECRET` 加密，渠道配置接口只返回 `pelican_key_configured`，不会回显密钥；备份 / 恢复数据库时必须保留配套主密钥。该密钥只用于关联账号的渠道测智，不等同于渠道管理凭据或分组网关 Key。
+渠道 `pelican_api_key` 使用 `APP_SECRET` 加密，渠道配置接口只返回 `pelican_key_configured`，不会回显密钥；备份 / 恢复数据库时必须保留配套主密钥。该密钥用于关联账号测智或纯渠道直连，不等同于渠道管理凭据或分组网关 Key。直连接口使用后台认证，不向公开分组提供执行、详情或删除接口；返回结果时不暴露保存的 Key。
 
 自定义 `login_headers` 是可编辑渠道配置，会随受认证保护的渠道读取接口返回，配置值不应视为加密秘密。避免在静态 Header 中放长期有效的 API Key；优先使用专用加密凭据字段或动态会话占位符。Headers 可覆盖默认认证头，因此配置错误也可能改变登录、校验、续期和后续上游请求。见 [渠道管理](/guide/channels) 与 [配置项](/reference/configuration)。

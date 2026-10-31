@@ -2,7 +2,7 @@
 
 这里解释 GatewayOps 页面数字从哪里来、配置何时生效，以及系统在什么条件下修改远端数据。先按问题定位规则，再结合对应使用指南操作。
 
-这些说明已同步至 GatewayOps `v1.0.9` 标签提交 `392bc60`；变化见 [产品更新记录](/reference/changelog)。部署实例可能使用不同提交；请先在系统设置查看版本、提交号和构建时间，再核对 [版本与更新](/reference/versions)。
+这些说明已同步至 GatewayOps `v1.1.0` 标签提交 `61401b8`；变化见 [产品更新记录](/reference/changelog)。部署实例可能使用不同提交；请先在系统设置查看版本、提交号和构建时间，再核对 [版本与更新](/reference/versions)。
 
 ## 指标与成本
 
@@ -14,7 +14,7 @@
 | 首字时间、P50 / P95、输出速度、时间稳定性评分 | [延迟与稳定性](/logic/latency-and-stability) |
 | 缓存命中、重试感知成功率、TPS、统计时长 / 数量和四项综合评分 | [缓存指标与健康评分](/logic/cache-and-health-score) |
 | 全局品牌、图片校验、保存及公开读取 | [系统设置](/guide/system-settings)、[配置项](/reference/configuration) |
-| 渠道、号池与分组作品、方案启停、生成状态和单次参数 | [鹈鹕测智与作品历史](/logic/pelican-testing) |
+| 渠道直连 / 关联、号池与分组作品、方案启停、生成状态和单次参数 | [鹈鹕测智与作品历史](/logic/pelican-testing) |
 | 渠道与中转站账号关联、近期调用匹配、时间桶对齐及明细 | [渠道与中转站调用对比](/logic/call-comparison) |
 | New API 中转站凭据、同步映射、管理能力及限制 | [New API 中转站](/logic/newapi-relay) |
 
