@@ -97,6 +97,7 @@ export default defineConfig({
           { text: "指标口径", link: "/logic/metrics" },
           { text: "渠道余额与调用记录", link: "/logic/channel-consumption" },
             { text: "渠道历史核对与回补", link: "/logic/channel-usage-history" },
+            { text: "渠道代理与请求出口", link: "/logic/channel-proxy" },
           { text: "成本与倍率", link: "/logic/cost-accounting" },
           { text: "延迟与稳定性", link: "/logic/latency-and-stability" },
           { text: "缓存指标与健康评分", link: "/logic/cache-and-health-score" },

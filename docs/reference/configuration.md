@@ -85,6 +85,10 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 | --- | --- | --- |
 | `channel_enabled` | `false` | 保存后替代旧渠道任务模式。 |
 | `channel_interval_minutes` | `30` | 小于 1 时归一为 30 分钟。 |
+| `channel_usage_integrity_enabled` | `true` | 全渠道核对与修复每日计划；与普通渠道同步独立。 |
+| `channel_usage_integrity_range` | `24h` | 仅 `today`、`24h`、`7d`、`all`；7 天为滚动 168 小时，不接受 30 天或自定义。 |
+| `channel_usage_integrity_time` | `07:00` | 严格 `HH:mm`，按 `Asia/Shanghai` 每日执行。 |
+| `group_monitor_interval_seconds` | `30` | 10–3600 的整数秒；后台计算分组四种固定区间快照。 |
 | `channel_token_refresh_enabled` | `false` | 独立开启 Sub2API Token 维护，不替代渠道监控开关。 |
 | `channel_token_refresh_interval_minutes` | `30` | 接口要求大于等于 1 的整数分钟。 |
 | `relay_rate_enabled` | `false` | 配置且开启后才定时探测。 |
@@ -92,7 +96,7 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 | `relay_snapshot_enabled` | `false` | 配置且开启后才定时同步快照。 |
 | `relay_snapshot_interval_seconds` | `3600` | 小于 5 秒时优先兼容正分钟字段，否则回退 3600 秒。 |
 
-中转站秒字段优先，分钟字段用于兼容旧设置。一次保存会记录原有渠道同步、倍率探测、快照三类任务均已配置；关闭任务也会保存，不会自动恢复旧启动 cron。Token 刷新是独立的第四类维护任务，只处理启用监控的 Sub2API Token 模式凭据，详见 [同步与数据处理](/logic/synchronization)。
+中转站秒字段优先，分钟字段用于兼容旧设置。一次保存会记录原有渠道同步、倍率探测、快照三类任务均已配置；关闭任务也会保存，不会自动恢复旧启动 cron。Token 刷新是独立维护任务，只处理启用监控的 Sub2API Token 模式凭据，详见 [同步与数据处理](/logic/synchronization)。
 
 显示设置中，运营目录、渠道页面以及倍率变化、渠道信息、近期调用、分组、稳定性、消费模块默认显示；分组默认不展开。iframe 默认关闭、模式为 `allowlist`、白名单为空。父级关闭保留子项值，隐藏不会停任务。
 
@@ -103,11 +107,19 @@ cron 为含秒的 6 字段表达式。渠道保存过页面同步设置后，会
 | `recent_metrics_window_hours` | `1` | 1–24 的整数小时；近期指标的回看窗口。下拉提供常用时长并兼容已保存的其他有效值。 |
 | `recent_metrics_limit` | `60` | 1–200 的整数；近期样本读取与统计数量上限，存储键为 `ui.monitor.recent_metrics_limit`。 |
 
-两者共同影响渠道和中转站账号的缓存命中率、重试感知成功率、TPS、综合评分及对应排序；v1.0.8 起还用于公开分组三项环形指标的后端聚合；最近数量还控制最近调用和对比读取的样本上限。修改后需点击“监控指标”卡片的“保存监控设置”，或“界面与页面”标题行的“保存界面与监控设置”。参数不调整后台采集间隔、历史保留期或历史时间桶，详见 [缓存指标与健康评分](/logic/cache-and-health-score)。
+两者共同影响渠道和中转站账号的缓存命中、TPS、三项综合评分及对应排序，也用于公开分组缓存 / TPS 的后台快照聚合；v1.1.2 已移除重试感知成功率环形和排序；最近数量还控制最近调用和对比读取的样本上限。修改后需点击“监控指标”卡片的“保存监控设置”，或“界面与页面”标题行的“保存界面与监控设置”。参数不调整后台采集间隔、历史保留期或历史时间桶，详见 [缓存指标与健康评分](/logic/cache-and-health-score)。
 
 中转站局部自动策略默认均关闭，召回等待默认 180 分钟（15–10080）；账号并发 / 手动优先级允许 1–1000，同账号重试允许 0–10。详见 [自动调组](/logic/auto-group-adjustment)、[自动优先级](/logic/auto-priority) 和 [账号操作与测试](/logic/account-operations)。
 
 公开分组直接复用上述两字段，无新增环境变量或独立采样开关。其 `recent_metrics` 与公开历史范围、最终请求成功率、最多 60 条调用明细分别计算；接口完整性与缓存规则见 [公开页面的数据规则](/logic/public-monitor-and-pricing)。
+
+全渠道核对和分组计算配置均保存在 PostgreSQL，不新增 `.env` 变量。修改后在“后台任务与同步”点击“保存任务设置”。立即执行调用 `POST /api/tasks/channel_usage_integrity/run`，仅接受后台已保存范围；返回 202 为已接受，运行中或不可用为 409。关闭日计划不禁止手动执行，见 [任务规则](/logic/channel-usage-history)。
+
+## 渠道代理配置
+
+渠道创建 / 更新字段 `proxy_id` 绑定全局代理记录；创建可省略，更新省略保持原值，显式 `null` 或 0 解除绑定。`GET /api/proxies` 读取脱敏列表，`POST /api/proxies` 接收 `url`，完整 URL 使用 `APP_SECRET` 加密并按规范化 URL 哈希复用。列表不返回明文密码或密文。
+
+仅允许 HTTP / HTTPS 完整 URL，最长 4096 字节，可含有效端口和认证，不允许业务路径、查询、片段或 SOCKS。选择“不使用代理”仍可能沿用服务端环境代理，详细范围见 [渠道代理与请求出口](/logic/channel-proxy)。
 
 ## 渠道测智 Key 与 Header 配置
 

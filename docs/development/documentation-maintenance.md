@@ -4,10 +4,13 @@
 
 ## 本轮覆盖范围
 
-文档对照主项目 `v1.1.1` 标签提交 `234c4fd` 整理，本轮核对 `v1.1.0..v1.1.1` 范围内的 4 个提交及正式 Release。覆盖自定义时间的浏览器 / 服务端时区与半开区间、渠道条数核对与分段回补、连续断点及上游保留边界、持久缩略图权限和按需生成，以及路由拆包、gzip 与静态资源缓存。旧版 `v1.1.0` 固定为文档提交 `37cc5d9`；版本与入口见 [产品更新记录](/reference/changelog)。
+文档对照主项目 `v1.1.2` 标签提交 `63bdd8a`，核对 `v1.1.1..v1.1.2` 的 9 个提交及正式 Release。覆盖独立全渠道每日核对与手动执行、页面自动校对取消、Sub2API 分页报告、HTTP / HTTPS 代理及安全出口、分组持久快照和固定范围、三项健康评分与环形调整、分位速度、缩略图回读恢复及紧凑时间弹层。旧版 `v1.1.1` 固定为文档提交 `2ac69f3`；日期按北京时间记录，见 [产品更新记录](/reference/changelog)。
 
 | 功能 / 规则 | 文档入口 | 主要实现来源（主项目相对路径） |
 | --- | --- | --- |
+| 后台每日核对、手动执行、默认时区与范围 | [渠道历史核对与回补](/logic/channel-usage-history) | `backend/internal/scheduler/channel_usage_integrity.go`、`backend/internal/monitor/usage_history_all.go`、`backend/internal/api/task_runs.go` |
+| 渠道代理校验、加密、请求隔离与测智出口 | [渠道代理与请求出口](/logic/channel-proxy) | `backend/internal/networkproxy/proxy.go`、`backend/internal/api/proxies.go`、`backend/internal/relay/channel_proxy.go` |
+| 分组固定区间快照、日明细复用与计算频率 | [公开数据规则](/logic/public-monitor-and-pricing) | `backend/internal/relay/group_monitor_snapshot.go`、`backend/internal/storage/relay_group_monitor.go`、`backend/internal/scheduler/group_monitor.go` |
 | 自定义时间、时区、首页统计与利润参考 | [指标口径](/logic/metrics) | `frontend/lib/time-range.ts`、`backend/internal/api/time_range.go`、`backend/internal/api/dashboard.go` |
 | 渠道历史条数核对、分段回补与连续断点 | [渠道历史核对与回补](/logic/channel-usage-history) | `backend/internal/api/channel_usage_history.go`、`backend/internal/monitor/usage_history_sync.go`、`usage_checkpoint.go`、`usage_newapi.go`、`backend/internal/connector/usage_limiter.go` |
 | 测智持久缩略图与受控并发 | [鹈鹕测智](/logic/pelican-testing) | `backend/internal/api/pelican_thumbnail.go`、`backend/internal/storage/pelican_thumbnail.go`、`frontend/lib/pelican-thumbnail-store.ts`、`pelican-thumbnails.ts` |
@@ -18,13 +21,13 @@
 | 账本充值与采购联动 | [成本与倍率](/logic/cost-accounting) | `backend/internal/storage/operations.go` |
 | 历史自动关联清理与显式绑定 | [成本与倍率](/logic/cost-accounting) | `backend/internal/storage/relay_stations.go`、`backend/internal/relay/service.go` |
 | 综合评分、时间稳定性、输出速度与百分位 | [延迟与稳定性](/logic/latency-and-stability) | `frontend/lib/latency.ts`、`backend/internal/relay/latency_buckets.go`、`backend/internal/api/channel_usage.go` |
-| 近期 Token 缓存、尝试成功率和四项账号评分 | [缓存指标与健康评分](/logic/cache-and-health-score) | `frontend/lib/recent-request-metrics.ts`、`frontend/lib/latency.ts`、`backend/internal/connector/newapi/cache_metrics.go` |
+| 近期 Token 缓存、TPS 和三项账号评分 | [缓存指标与健康评分](/logic/cache-and-health-score) | `frontend/lib/recent-request-metrics.ts`、`frontend/lib/latency.ts`、`backend/internal/connector/newapi/cache_metrics.go` |
 | 全局品牌、名称与图片校验、公开读取 | [系统设置](/guide/system-settings)、[配置项](/reference/configuration) | `backend/internal/storage/branding.go`、`backend/internal/api/branding.go`、`system_settings.go`、`frontend/lib/branding.ts`、`frontend/components/product-branding.tsx`、`system/branding-settings-card.tsx` |
 | TPS 聚合、样本排除、封顶评分与独立排序 | [缓存指标与健康评分](/logic/cache-and-health-score) | `frontend/lib/recent-request-metrics.ts`、`recent-request-metrics.test.ts`、`frontend/components/monitor/recent-request-metrics.tsx`、`channel-cards.tsx`、`frontend/app/relay-stations-page.tsx` |
 | 无关联渠道直连、结果归属与空列表兼容 | [渠道管理](/guide/channels)、[测智规则](/logic/pelican-testing) | `backend/internal/api/channel_pelican.go`、`backend/internal/relay/pelican.go`、`pelican_upstream.go`、`backend/internal/storage/pelican.go`、`channel_pelican.go`、`frontend/lib/pelican-library.ts`、`pelican-sources.ts`、`frontend/components/monitor/channel-pelican-panel.tsx` |
 | 渠道测智 Key、NewAPI 调用与 Sub2API 回退 | [渠道管理](/guide/channels)、[鹈鹕测智](/logic/pelican-testing) | `backend/internal/channel/pelican_key.go`、`backend/internal/relay/pelican_upstream.go`、`backend/internal/relay/pelican.go`、`backend/internal/storage/channel_pelican.go`、`frontend/components/monitor/channel-pelican-panel.tsx` |
 | 统一渠道认证 Header 与会话变量 | [渠道管理](/guide/channels)、[访问与显示策略](/logic/security-and-access) | `backend/internal/connector/connector.go`、`backend/internal/connector/newapi/newapi.go`、`backend/internal/connector/sub2api/sub2api.go`、`frontend/components/monitor/channel-form-dialog.tsx` |
-| 公开分组近期采样、重试口径、完整性及缓存 | [公开页面的数据规则](/logic/public-monitor-and-pricing) | `backend/internal/relay/group_monitor.go`、`group_monitor_metrics.go`、`group_monitor_metrics_test.go`、`frontend/lib/public-relay-monitor.ts`、`frontend/app/public-relay-monitor-page.tsx` |
+| 公开分组持久快照、近期采样、最终结果及过期状态 | [公开页面的数据规则](/logic/public-monitor-and-pricing) | `backend/internal/relay/group_monitor.go`、`group_monitor_metrics.go`、`group_monitor_metrics_test.go`、`frontend/lib/public-relay-monitor.ts`、`frontend/app/public-relay-monitor-page.tsx` |
 | 统计时长、最近数量与保存 | [系统设置](/guide/system-settings) | `backend/internal/storage/settings.go`、`backend/internal/api/system_settings.go`、`frontend/app/system-settings-page.tsx` |
 | 多来源测智、方案启用、生成中记录、单次参数、作品删除与沙箱 | [鹈鹕测智](/logic/pelican-testing) | `backend/internal/relay/pelican.go`、`pelican_upstream.go`、`group_pelican.go`、`backend/internal/storage/pelican_settings.go`、`pelican_schedule.go`、`pelican_sources.go`、`frontend/components/relay/pelican.tsx` |
 | 自动任务执行状态、日志、分页与重启中断 | [定时任务执行历史](/logic/task-execution-history) | `backend/internal/scheduler/task_runs.go`、`backend/internal/storage/task_runs.go`、`backend/internal/api/task_runs.go`、`frontend/components/system/task-history.tsx` |
