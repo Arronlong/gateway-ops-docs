@@ -4,11 +4,14 @@
 
 ## 本轮覆盖范围
 
-文档对照主项目 `v1.1.0` 标签提交 `61401b8` 整理，本轮核对 `v1.0.9..v1.1.0` 范围内的 3 个提交。补充未关联渠道直连的 Key、地址与首项具体模型、仅手动执行、结果渠道归属与接口、留存、空结果兼容及渠道卡片入口。不把标签直接等同于正式 Release 或镜像发布完成，见 [产品更新记录](/reference/changelog)。
+文档对照主项目 `v1.1.1` 标签提交 `234c4fd` 整理，本轮核对 `v1.1.0..v1.1.1` 范围内的 4 个提交及正式 Release。覆盖自定义时间的浏览器 / 服务端时区与半开区间、渠道条数核对与分段回补、连续断点及上游保留边界、持久缩略图权限和按需生成，以及路由拆包、gzip 与静态资源缓存。旧版 `v1.1.0` 固定为文档提交 `37cc5d9`；版本与入口见 [产品更新记录](/reference/changelog)。
 
 | 功能 / 规则 | 文档入口 | 主要实现来源（主项目相对路径） |
 | --- | --- | --- |
-| 时间窗口、首页统计与利润参考 | [指标口径](/logic/metrics) | `backend/internal/api/dashboard.go`、`frontend/app/relay-stations-page.tsx` |
+| 自定义时间、时区、首页统计与利润参考 | [指标口径](/logic/metrics) | `frontend/lib/time-range.ts`、`backend/internal/api/time_range.go`、`backend/internal/api/dashboard.go` |
+| 渠道历史条数核对、分段回补与连续断点 | [渠道历史核对与回补](/logic/channel-usage-history) | `backend/internal/api/channel_usage_history.go`、`backend/internal/monitor/usage_history_sync.go`、`usage_checkpoint.go`、`usage_newapi.go`、`backend/internal/connector/usage_limiter.go` |
+| 测智持久缩略图与受控并发 | [鹈鹕测智](/logic/pelican-testing) | `backend/internal/api/pelican_thumbnail.go`、`backend/internal/storage/pelican_thumbnail.go`、`frontend/lib/pelican-thumbnail-store.ts`、`pelican-thumbnails.ts` |
+| 路由拆包、gzip 与前端资源缓存 | [备份与升级](/deploy/security-backup-upgrade) | `frontend/src/main.tsx`、`backend/internal/api/frontend_assets.go` |
 | 余额下降、归零恢复、每日基线 | [渠道余额](/logic/channel-consumption) | `backend/internal/storage/rates.go`：`ChannelConsumptionTotals`、`CaptureDailyBalances` |
 | 多账号采集、调用回填与认证 | [渠道管理](/guide/channels) | `backend/internal/monitor/service.go`、`backend/internal/channel/service.go`、`backend/internal/storage/channel_usage.go` |
 | 成本汇总、未知成本与覆盖 | [成本与倍率](/logic/cost-accounting) | `backend/internal/api/operations.go`、`backend/internal/api/operation_costs.go`、`backend/internal/relay/service.go` |

@@ -2,7 +2,7 @@
 
 这里解释 GatewayOps 页面数字从哪里来、配置何时生效，以及系统在什么条件下修改远端数据。先按问题定位规则，再结合对应使用指南操作。
 
-这些说明已同步至 GatewayOps `v1.1.0` 标签提交 `61401b8`；变化见 [产品更新记录](/reference/changelog)。部署实例可能使用不同提交；请先在系统设置查看版本、提交号和构建时间，再核对 [版本与更新](/reference/versions)。
+这些说明已同步至 GatewayOps `v1.1.1` 标签提交 `234c4fd`；变化见 [产品更新记录](/reference/changelog)。部署实例可能使用不同提交；请先在系统设置查看版本、提交号和构建时间，再核对 [版本与更新](/reference/versions)。
 
 ## 指标与成本
 
@@ -10,6 +10,7 @@
 | --- | --- |
 | 时间范围、余额、请求数、用户扣费、空值的含义 | [指标口径](/logic/metrics) |
 | 余额变化如何推算消耗、多账号失败如何汇总 | [渠道余额与调用记录](/logic/channel-consumption) |
+| 历史条数核对、异常分段、逐页回补、断点和限流 | [渠道历史核对与回补](/logic/channel-usage-history) |
 | 现金净额、实际成本、成本倍率来源、覆盖优先级 | [成本与倍率](/logic/cost-accounting) |
 | 首字时间、P50 / P95、输出速度、时间稳定性评分 | [延迟与稳定性](/logic/latency-and-stability) |
 | 缓存命中、重试感知成功率、TPS、统计时长 / 数量和四项综合评分 | [缓存指标与健康评分](/logic/cache-and-health-score) |
